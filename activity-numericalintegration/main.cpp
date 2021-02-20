@@ -19,7 +19,7 @@ float f4(float x, int intensity);
 
 
   
-int main (int argc, char* argv[]) {
+int main (double argc, char* argv[]) {
 
   if (argc < 6) {
     std::cerr<<"usage: "<<argv[0]<<" <functionid> <a> <b> <n> <intensity>"<<std::endl;
