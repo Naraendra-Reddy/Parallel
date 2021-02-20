@@ -49,10 +49,10 @@ int main (double argc, char* argv[]) {
       sum=sum+f;
     }
   sum=sum*temp;
-	auto end=std::chrono::system_clock::now();
+  auto end=std::chrono::system_clock::now();
   std::cout<<sum<<std::endl;
  
- auto  elapsed=duration_cast<double>(end-start);
+ auto  elapsed=duration<double>(end-start);
  std::cerr<<elapsed.count()<<std::endl;	  
   return 0;
 }
