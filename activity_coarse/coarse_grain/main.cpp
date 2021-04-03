@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <mutex>
+#include<thread>
 
 #include "Dictionary.hpp"
 #include "MyHashtable.hpp"
