@@ -85,23 +85,18 @@ int main(int argc, char **argv)
 
   // write code here
 
-  std::vector<std::thread> threads;
-  std::mutex mu;
+  std::vector<std::thread> t;
+  std::mutex mut;
   for(auto & filecontent : wordmap){
-    //  threads.push_back(std::thread(fileCount, std::ref(filecontent), std::ref(dict)));
-    threads.push_back(std::thread([&filecontent, &dict, &mu] {
-	  //mu.lock();			    
-          for(auto & w: filecontent){
-	    std::lock_guard<std::mutex> lg(mu);
-	    int count = dict.get(w);
-	    ++count;
-	    dict.set(w,count);
-	    
-	  }
-	  // mu.unlock();
-	}));
+       t.push_back(std::thread([&filecontent, &dict, &mut] {		    
+          for(auto &w: filecontent){
+	    std::lock_guard<std::mutex> lg(mut);
+	    int c = dict.get(w);
+	    ++c;
+	    dict.set(w,c);
+	    }}));
   }
-  for(auto &th : threads){
+  for(auto &th : t){
     th.join();
    }
   
