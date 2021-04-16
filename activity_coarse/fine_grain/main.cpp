@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "Dictionary.hpp"
 #include "MyHashtable.hpp"
@@ -45,7 +47,13 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
   return ret;
 }
 
-
+/*void fileCount(auto &filecontent, const Dictionary<std::string, int> &dict ){
+   for(auto & w: filecontent){
+      int count = dict.get(w);
+      ++count;
+      dict.set(w,count);
+   }
+   } */
 
 int main(int argc, char **argv)
 {
@@ -73,18 +81,33 @@ int main(int argc, char **argv)
   MyHashtable<std::string, int> ht;
   Dictionary<std::string, int>& dict = ht;
 
-
+  auto start = std::chrono::steady_clock::now();
 
   // write code here
 
-
-
-
-
-
-
-
-
+  std::vector<std::thread> threads;
+  std::mutex mu;
+  for(auto & filecontent : wordmap){
+    //  threads.push_back(std::thread(fileCount, std::ref(filecontent), std::ref(dict)));
+    threads.push_back(std::thread([&filecontent, &dict] {
+	  //mu.lock();			    
+          for(auto & w: filecontent){
+	    //  std::lock_guard<std::mutex> lg(mu);
+	    int count = dict.get(w);
+	    ++count;
+	    dict.set(w,count);
+	    
+	  }
+	  // mu.unlock();
+	}));
+  }
+  for(auto &th : threads){
+    th.join();
+   }
+  
+  auto stop = std::chrono::steady_clock::now();
+  std::chrono::duration<double> time_elapsed = stop-start;
+  std::cerr << time_elapsed.count()<<"\n";
 
   // Check Hash Table Values 
   /* (you can uncomment, but this must be commented out for tests)
