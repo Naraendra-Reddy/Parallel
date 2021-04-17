@@ -119,7 +119,7 @@ public:
     // m[kth_lock].lock();
     // mu.lock();
     // cond.wait(mu, [&]() {return (done)||
-    std::shared_lock<std::shared_time_mutex> lock(m[kth_lock]);
+    std::shared_lock<std::shared_timed_mutex> lock(m[kth_lock]);
     const Node<K,V>* node = this->table[index];
 
     while (node != nullptr) {
